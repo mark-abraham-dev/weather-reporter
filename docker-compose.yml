@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=False
+      - MONGODB_URI=mongodb://mongodb:27017/
+      - MONGODB_DB_NAME=weather_db
+      - WEATHER_API_KEY=${WEATHER_API_KEY}
+      - WEATHER_UPDATE_INTERVAL_SECONDS=10
+      - CORS_ORIGINS=*
+    depends_on:
+      - mongodb
+    restart: always
+
+  mongodb:
+    image: mongo:5.0
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    restart: always
+
+volumes:
+  mongodb_data:
